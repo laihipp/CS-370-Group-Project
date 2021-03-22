@@ -67,6 +67,6 @@ public class Server {
     private InputStream input = null;
     private DataInputStream in = null;
     private String requestedTitle = "";
-    private ArrayList<String> requestedTimes;
+    private List<String> requestedTimes;
     private Utility util = new Utility();
 }
