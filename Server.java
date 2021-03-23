@@ -38,7 +38,7 @@ public class Server {
             requestedTitle = in.readUTF();
             
             // get list of times for requested movie
-            requestedTimes = new ArrayList<>(util.getRequestedTimes(requestedTitle));
+            requestedTimes = util.getRequestedTimes(requestedTitle).toArray(new String[0]);
             
             // return list of times to client
             // how do we want to print the list of times?
@@ -67,6 +67,6 @@ public class Server {
     private InputStream input = null;
     private DataInputStream in = null;
     private String requestedTitle = "";
-    private List<String> requestedTimes;
+    private String[] requestedTimes;
     private Utility util = new Utility();
 }
