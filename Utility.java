@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package main;
 
 import java.util.ArrayList;
@@ -56,15 +51,15 @@ public class Utility {
         return null;
     }
     
-    // print out list of movie titles - not sure we need this
-    public String printMovieTitles() {
-        String output = "";
+    // create list of movie titles
+    public ArrayList<String> createMovieTitles() {
         for (Movie m : moviesList) {
-            output += (m.getName() + "\n");
+            movieTitles.add(m.getName());
         }
         
-        return output;
+        return movieTitles;
     }
     
     private static ArrayList<Movie> moviesList = new ArrayList<Movie>();
+    private ArrayList<String> movieTitles = new ArrayList<String>();
 }
