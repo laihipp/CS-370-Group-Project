@@ -1,16 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package main;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 /**
  *
@@ -27,25 +19,48 @@ public class Server {
             clientSocket = serverSocket.accept();
             System.out.println("Client accepted");
             
-            // send list of movies to client
-            // util.printMovieTitles();
-            
-            // get input from client (which movie do they want times for?)
-            input = clientSocket.getInputStream();
             // create DataInputStream so that data can be read
-            in = new DataInputStream(input);
+            dataIn = new DataInputStream(clientSocket.getInputStream());
+            // crete DataOutputStream so that data can be sent out
+            dataOut = new ObjectOutputStream(clientSocket.getOutputStream());
+            //BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in));
             
-            requestedTitle = in.readUTF();
+            String inLine = "";
             
-            // get list of times for requested movie
-            requestedTimes = new ArrayList<>(util.getRequestedTimes(requestedTitle));
+            // get initial request from client
+            inLine = dataIn.readUTF();
             
-            // return list of times to client
-            // how do we want to print the list of times?
+            // Communicate until client sends "Quit"
+            while (!inLine.equals("Quit")) {                
+                // if client sends "Show Movie Titles", send list of movies to client
+                if(inLine.equals("Show Movie Titles")) {
+                    // create output (list of movies) as an array of strings
+                    movieTitlesArray = util.createMovieTitles().toArray(new String[0]);
+                    
+                    // send list to client
+                    dataOut.writeObject(movieTitlesArray);
+                    
+                // get input from client (which movie do they want times for?)
+                requestedTitle = dataIn.readUTF();
+                }
+                
+                // otherwise the list of movies has already been shown and they are requesting times for a different movie
+                requestedTitle = inLine;
+            
+                // get list of times for requested movie as an array of strings
+                requestedTimesArray = util.getRequestedTimes(requestedTitle).toArray(new String[0]);
+            
+                // return list of times to client
+                dataOut.writeObject(requestedTimesArray);
+                
+                // check for next client request?
+                inLine = dataIn.readUTF();
+            }
             
             // when user hits quit on client
-            // close datastream
-            in.close();
+            // close datastreams
+            dataIn.close();
+            dataOut.close();
             
             // close sockets
             serverSocket.close();
@@ -58,15 +73,15 @@ public class Server {
     
     
     public static void main(String args[]) {
-        Server server = new Server(5000);
-    
+        Server server = new Server(5000);   
     } 
     
     private Socket clientSocket = null;
     private ServerSocket serverSocket = null;
-    private InputStream input = null;
-    private DataInputStream in = null;
+    private ObjectOutputStream dataOut = null;
+    private DataInputStream dataIn = null;
+    private String[] movieTitlesArray;
     private String requestedTitle = "";
-    private List<String> requestedTimes;
+    private String[] requestedTimesArray;
     private Utility util = new Utility();
 }
