@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -43,8 +44,9 @@ public class Utility {
     public ArrayList<String> getRequestedTimes (String movieName) {
         // search through list of movies
         for (Movie m : moviesList) {
-            if (m.getName().contains(movieName)) // if requested movie is found
+            if (m.getName().equals(movieName)) { // if requested movie is found
                 return m.getTimes(); // return list of times
+            }
         }
         
         // if movie not found
