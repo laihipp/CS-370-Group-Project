@@ -3,6 +3,7 @@ package main;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 
 /**
  *
@@ -20,12 +21,12 @@ public class Server {
             System.out.println("Client accepted");
             
             // create DataInputStream so that data can be read
-            dataIn = new DataInputStream(clientSocket.getInputStream());
+            dataIn = new DataInputStream(new BufferedInputStream(clientSocket.getInputStream()));
             // crete DataOutputStream so that data can be sent out
             dataOut = new ObjectOutputStream(clientSocket.getOutputStream());
-            //BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in));
             
             String inLine = "";
+            boolean prevRequest = false;
             
             // get initial request from client
             inLine = dataIn.readUTF();
@@ -44,26 +45,31 @@ public class Server {
                 requestedTitle = dataIn.readUTF();
                 }
                 
-                // otherwise the list of movies has already been shown and they are requesting times for a different movie
+                if (prevRequest == true) {
+                // client is requesting times for an additional movie
                 requestedTitle = inLine;
+                }
             
                 // get list of times for requested movie as an array of strings
                 requestedTimesArray = util.getRequestedTimes(requestedTitle).toArray(new String[0]);
-            
+                
                 // return list of times to client
                 dataOut.writeObject(requestedTimesArray);
+                System.out.println(Arrays.toString(requestedTimesArray));
                 
+                prevRequest = true;
                 // check for next client request?
                 inLine = dataIn.readUTF();
             }
             
             // when user hits quit on client
+            System.out.println("Closing Connection");
             // close datastreams
             dataIn.close();
             dataOut.close();
             
             // close sockets
-            serverSocket.close();
+            //serverSocket.close();
             clientSocket.close();
         }
         catch(IOException exception) {
