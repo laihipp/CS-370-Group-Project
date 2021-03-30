@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Movie {
     public Movie(String title, ArrayList<String> times) {
         movieTitle = title;
-        ArrayList<String> movieTimes = new ArrayList<>(times);
+        movieTimes = new ArrayList<>(times);
     }
     
     public String getName() {
