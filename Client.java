@@ -88,6 +88,14 @@ public class Client
             {
             System.out.println(i);
             }
+            
+            // pause to allow communication to server to finish
+            try {
+                Thread.sleep(1000);
+            }
+            catch (InterruptedException ex){
+                // TBD
+            }
         }
         
         try
