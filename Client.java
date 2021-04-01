@@ -1,16 +1,32 @@
 import java.net.*;
 import java.io.*;
 
+//**********************
+// TODO
+// Change currentMoviesTxt to a flag variable or getter call @line56
+// Change findShowtimesButton to a flag variable or getter call @line72
+// Change movie if needed to a variable containing movie selected @line74
+//
+// These flag variables or getter calls must be made in movieGUI. I didn't
+// want to touch code that was not mine but I have what I think are quick fixes
+// to make this work, if you want me to make these changes let me know and I am
+// happy to do them. 
+//**********************
+
 public class Client
 {
     private Socket socket = null;
     //BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     //private BufferedReader input = null;
     private ObjectInputStream dataIn = null;
+    //private BufferedReader dataIn = null; //need this as BufferedReader for readLine()
     private DataOutputStream dataOut = null;
+    String[] movieTitles = { };
+    String[] movieTimes = { };
+    movieGui movieGUIObj = new movieGui();
     
     //Constructor, builds a socket object
-    public Client(String address, int port) throws IOException
+    public Client(String address, int port) throws IOException, ClassNotFoundException
     {
         try
         {
@@ -21,7 +37,7 @@ public class Client
             //BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
             
             // set up data streams
-            dataIn = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+            dataIn = new ObjectInputStream(socket.getInputStream());
             dataOut = new DataOutputStream(socket.getOutputStream());
         }
         catch(UnknownHostException u)
@@ -35,49 +51,50 @@ public class Client
         
         // String that reads message from input
         String[] arrayIn = { };
+        
         String outLine = "";
         
         while(!outLine.equals("Quit")) // This can be changed to whatever we want to end requests
         {            
             // If user hits "Show Movies" Button
             // Send "Show Movie Titles" to Server
-            outLine = "Show Movie Titles";
-            
-            try {
-            dataOut.writeUTF(outLine);
-            }
-            catch(IOException i)
+            // currentMoviesTxt needs to be accessible via getter or made public
+            if (movieGUIObj.currentMoviesTxt == true) // Change currentMoviesTxt to the flag variable or getter call
             {
-            System.out.println(i);
+                outLine = "Show Movie Titles";
+                try 
+                {
+                    dataOut.writeUTF(outLine);
+                }
+                catch(IOException i)
+                {
+                    System.out.println(i);
+                }
+                
+                // set movieTitles to array received from server
+                movieTitles = (String[]) dataIn.readObject();
             }
             
-            // Get list of movie titles from server and send to GUI
-            
-            // if dataOut = "Quit", break
-            
-            // Get chosen movie from GUI and send to Server
-            outLine = "Up";
-            
-            try {
-            dataOut.writeUTF(outLine);
-            }
-            catch(IOException i)
+            // Get chosen movie from GUI and send to Server for server times
+            // When the flag is set, we will request the info
+            // from the server
+            if (movieGUIObj.findShowtimesButton == false) // Change findShowtimesButton to a flag variable or getter call @line
             {
-            System.out.println(i);
+                outLine = movieGUIObj.movie; //Need access to movie string in movieGui.java
+                try 
+                {
+                    dataOut.writeUTF(outLine);
+                }
+                catch(IOException i)
+                {
+                    System.out.println(i);
+                }               
             }
+
             
             // Get list of movie times from server and send to GUI
             
-            // Get next request from GUI
-            // test requesting times for second movie
-            outLine = "Soul";
-            try {
-            dataOut.writeUTF(outLine);
-            }
-            catch(IOException i)
-            {
-            System.out.println(i);
-            }
+
             //test quit statement
             
             outLine = "Quit";
@@ -112,6 +129,8 @@ public class Client
     
     public static void main(String args[]) throws IOException
     {
+        
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -121,5 +140,49 @@ public class Client
         });
         
         Client client = new Client("127.0.0.1", 5000);
+    }
+    
+    public String[] getMovieTitles()
+    {
+        return movieTitles;
+    }
+    
+    // Read in the movie titles into an array one at a time, may
+    // need to be adjusted if we need the movie titles to be sent
+    // all at once as they are now
+    public void setMovieTitles()
+    {
+        
+        for (int j = 1; j > 3; j++) // currently hardcoding number of recieved titles
+        {
+            try
+            {
+                movieTitles[j] = dataIn.readLine();
+            }
+            catch(IOException i)
+            {
+                System.out.println(i);
+            }
+        }
+    }
+    
+    public String[] getMovieTimes()
+    {
+        return movieTimes;
+    }
+    
+    public void setMovieTimes()
+    {
+         for (int j = 1; j > 3; j++) // currently hardcoding number of recieved times
+        {
+            try
+            {
+                movieTimes[j] = dataIn.readLine();
+            }
+            catch(IOException i)
+            {
+                System.out.println(i);
+            }
+        }       
     }
 }
