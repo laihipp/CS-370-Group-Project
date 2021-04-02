@@ -1,5 +1,7 @@
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -13,6 +15,10 @@ import java.util.ArrayList;
  */
 public class movieGui extends javax.swing.JFrame {
 
+    public static boolean RETRIEVEMOVIELIST = true;
+    public static boolean RETRIEVEMOVIETIMES = true;
+    public static String movie = "test";
+    
     /**
      * Creates new form movieGui
      */
@@ -21,7 +27,6 @@ public class movieGui extends javax.swing.JFrame {
         currentMoviesTxt.setVisible(false);
         movieList.setVisible(false);        
         findShowtimesButton.setVisible(false);
-        
         currentTimesTxt.setVisible(false);
         timesList.setVisible(false);
     }
@@ -34,7 +39,7 @@ public class movieGui extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+        
         jPanel1 = new javax.swing.JPanel();
         movieHeaderTxt = new javax.swing.JTextField();
         currentMoviesTxt = new javax.swing.JTextField();
@@ -45,6 +50,7 @@ public class movieGui extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         timesList = new java.awt.List();
         retriveMoviesButton = new javax.swing.JButton();
+        exitButton = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -61,19 +67,11 @@ public class movieGui extends javax.swing.JFrame {
 
         movieHeaderTxt.setEditable(false);
         movieHeaderTxt.setText("Movie Times for Madison Square 12");
-        movieHeaderTxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                movieHeaderTxtActionPerformed(evt);
-            }
-        });
+       
 
         currentMoviesTxt.setEditable(false);
         currentMoviesTxt.setText("Current Movies");
-        currentMoviesTxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                currentMoviesTxtActionPerformed(evt);
-            }
-        });
+      
 
         movieList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,23 +89,20 @@ public class movieGui extends javax.swing.JFrame {
 
         currentTimesTxt.setEditable(false);
         currentTimesTxt.setText("Times");
-        currentTimesTxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                currentTimesTxtActionPerformed(evt);
-            }
-        });
-
-        timesList.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                timesListActionPerformed(evt);
-            }
-        });
+        
         jScrollPane2.setViewportView(timesList);
 
         retriveMoviesButton.setText("Retrieve Shown Movies");
         retriveMoviesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 retriveMoviesButtonActionPerformed(evt);
+            }
+        });
+
+        exitButton.setText("Exit");
+        exitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitButtonActionPerformed(evt);
             }
         });
 
@@ -130,13 +125,16 @@ public class movieGui extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(currentTimesTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(currentTimesTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(exitButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(2, 2, 2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(movieHeaderTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(retriveMoviesButton)
@@ -144,49 +142,38 @@ public class movieGui extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(currentMoviesTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(currentTimesTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(findShowtimesButton))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(findShowtimesButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(exitButton))
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>  
 
-    private void movieHeaderTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_movieHeaderTxtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_movieHeaderTxtActionPerformed
 
-    private void currentMoviesTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_currentMoviesTxtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_currentMoviesTxtActionPerformed
-
-    private void currentTimesTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_currentTimesTxtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_currentTimesTxtActionPerformed
-
-    //SEREVER ACTION
+    //SERVER ACTION
     private void retriveMoviesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retriveMoviesButtonActionPerformed
+        RETRIEVEMOVIELIST = true;
         retriveMoviesButton.setVisible(false);
         currentMoviesTxt.setVisible(true);
         movieList.setVisible(true);
         
-        //Send to server to populate the movie list.
-        int retrieveInfo=1;
-        
-        String[] importedMovieList={"Fast and furious Test","Harry Pottery and the Chamber of Test","Test on the Roof"};
-        //TODO get string Array from the server
-        
+        //get string Array from the server
+        String[] importedMovieList = Client.movieTitles;
         
         int itemsInList=importedMovieList.length;
         
+        //Populate the Movie list with the string array from the server
         for(int temp=0; temp <itemsInList; temp++){
         movieList.add(importedMovieList[temp]);
         };
+        RETRIEVEMOVIELIST = false;
             }//GEN-LAST:event_retriveMoviesButtonActionPerformed
 
   
@@ -195,21 +182,24 @@ public class movieGui extends javax.swing.JFrame {
         findShowtimesButton.setVisible(true);
     }//GEN-LAST:event_movieListActionPerformed
    
-    
-    private void timesListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timesListActionPerformed
-        
-            }//GEN-LAST:event_timesListActionPerformed
-
 
 //SERVER ACTION
     private void findShowtimesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findShowtimesButtonActionPerformed
-        String movie=movieList.getSelectedItem();
+        //remove any items in TimesList
+        timesList.removeAll();
+        
+        RETRIEVEMOVIETIMES = true;
+        movie = movieList.getSelectedItem();
         //Send movie to Server
+        // pause to allow communication to server to finish
         
-        String[] importedTimeList={"7pm","7:30pm","8:00pm"};
-        //TODO get string Array from the server
+        //get string Array from the server    
+        String[] importedTimeList = Client.getMovieTimes(movie);
+        
+       
         
         
+        //Fill Times list with movies from Server
         int itemsInList=importedTimeList.length;
         
         for(int temp=0; temp <itemsInList; temp++){
@@ -220,24 +210,17 @@ public class movieGui extends javax.swing.JFrame {
         
         currentTimesTxt.setVisible(true);
         timesList.setVisible(true);
+        RETRIEVEMOVIETIMES = false;  
         
     }//GEN-LAST:event_findShowtimesButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new movieGui().setVisible(true);
-                
-            }
-        });
-    }
-
+    
+    //EXIT BUTTON
+    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
+        System.exit(0);
+    }  
+    
+      
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField currentMoviesTxt;
     private javax.swing.JTextField currentTimesTxt;
@@ -249,8 +232,7 @@ public class movieGui extends javax.swing.JFrame {
     private java.awt.List movieList;
     private javax.swing.JButton retriveMoviesButton;
     private java.awt.List timesList;
+    private javax.swing.JButton exitButton;
     // End of variables declaration//GEN-END:variables
-    
 
 }
-
