@@ -15,6 +15,7 @@ public class movieGui extends javax.swing.JFrame {
     public static boolean RETRIEVEMOVIELIST = false;
     public static boolean RETRIEVEMOVIETIMES = false;
     public static String movie = "";
+
     /**
      * Creates new form movieGui
      */
@@ -181,7 +182,7 @@ public class movieGui extends javax.swing.JFrame {
         //Send to server to populate the movie list.
         int retrieveInfo=1;
         
-        String[] importedMovieList={"Fast and furious Test","Harry Pottery and the Chamber of Test","Test on the Roof"};
+        String[] importedMovieList = Client.movieTimes;
         //TODO get string Array from the server
         
         
@@ -211,7 +212,7 @@ public class movieGui extends javax.swing.JFrame {
         movie=movieList.getSelectedItem();
         //Send movie to Server
         
-        String[] importedTimeList={"7pm","7:30pm","8:00pm"};
+        String[] importedTimeList = Client.movieTimes;
         //TODO get string Array from the server
         
         
@@ -228,17 +229,6 @@ public class movieGui extends javax.swing.JFrame {
         RETRIEVEMOVIELIST = false;
     }                                                   
 
-    public static String[] setMovieList(String movieList[])
-    {
-        return movieList;
-    }
-    
-    public static String[] setTimeList(String TimeList[])
-    {
-        return TimeList;
-    }
-
-    
     /**
      * @param args the command line arguments
      */
